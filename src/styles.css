@@ -1,0 +1,242 @@
+/* Cortex Africa — jetons issus de studio/brief.md § Direction.
+   Registre papier / encre, à rebours du réflexe « fond noir + accent néon ». */
+
+:root {
+  --paper:     #EFEEE9;
+  --paper-dim: #E4E2DA;
+  --ink:       #12314F;
+  --ink-soft:  #5A6B7C;
+  --accent:    #C08A2E;
+  --line:      #D8D5CC;
+
+  --measure: 34rem;                 /* < 70 caractères */
+  --gutter: clamp(1.25rem, 5vw, 6rem);
+  --section: clamp(4.5rem, 11vh, 9rem);
+
+  --step--1: clamp(0.82rem, 0.79rem + 0.15vw, 0.9rem);
+  --step-0:  clamp(1rem, 0.96rem + 0.2vw, 1.12rem);
+  --step-1:  clamp(1.35rem, 1.2rem + 0.7vw, 1.75rem);
+  --step-2:  clamp(1.8rem, 1.4rem + 2vw, 3rem);
+  --step-3:  clamp(2.5rem, 1.5rem + 4.2vw, 5.4rem);
+}
+
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url('/fonts/archivo-latin-ext.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB,
+                 U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Archivo', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: var(--step-0);
+  line-height: 1.6;
+  font-synthesis-weight: none;
+}
+
+h1, h2, h3 { margin: 0; font-weight: 800; line-height: 0.95; letter-spacing: -0.02em; }
+p { margin: 0; max-width: var(--measure); }
+img { display: block; max-width: 100%; height: auto; }
+
+.wrap { padding-inline: var(--gutter); }
+.section { padding-block: var(--section); }
+.stack > * + * { margin-top: 1.1rem; }
+.measure { max-width: var(--measure); }
+
+/* ---------- Héros ---------- */
+
+.hero {
+  position: relative;
+  min-height: 92svh;
+  display: grid;
+  align-content: center;
+  overflow: hidden;
+}
+
+.hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.hero__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Le rendu généré tire plus froid que le papier du plan : rattrapé ici
+   plutôt que par une régénération payante. */
+.hero__media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(100deg, var(--paper) 0%, rgba(239,238,233,0.94) 34%, rgba(239,238,233,0.55) 62%, rgba(239,238,233,0.08) 100%),
+    rgba(239,238,233,0.12);
+}
+
+.hero__title {
+  font-size: var(--step-3);
+  max-width: 24ch;
+  text-wrap: balance;
+}
+
+.hero__title em { font-style: normal; display: block; }
+
+.hero__lede {
+  margin-top: 1.5rem;
+  font-size: var(--step-1);
+  line-height: 1.35;
+  color: var(--ink-soft);
+  max-width: 30ch;
+}
+
+.hero__actions {
+  margin-top: 2.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  align-items: center;
+}
+
+/* ---------- Boutons ---------- */
+
+.btn {
+  display: inline-block;
+  padding: 0.85rem 1.6rem;
+  background: var(--ink);
+  color: var(--paper);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: var(--step-0);
+  border: 1px solid var(--ink);
+  transition: background 0.18s ease, color 0.18s ease;
+}
+
+.btn:hover { background: transparent; color: var(--ink); }
+.btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+.btn--quiet {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--line);
+}
+
+.btn--quiet:hover { border-color: var(--ink); background: transparent; }
+
+/* ---------- Titres de section ---------- */
+
+.section__title { font-size: var(--step-2); max-width: 22ch; }
+
+.eyebrow {
+  font-size: var(--step--1);
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 0.9rem;
+}
+
+/* ---------- Grille du capital : le moment mémorable ---------- */
+
+.capital { background: var(--ink); color: var(--paper); }
+.capital .section__title { color: var(--paper); }
+.capital p { color: #C6D2DE; }
+.capital .eyebrow { color: var(--accent); }
+
+.shares {
+  margin-top: 2.5rem;
+  display: grid;
+  grid-template-columns: repeat(40, 1fr);
+  gap: 2px;
+  max-width: 66rem;
+}
+
+.share {
+  aspect-ratio: 1;
+  background: #24486B;
+  opacity: 0;
+  animation: share-in 0.5s ease forwards;
+}
+
+/* Les parts ouvertes — seule utilisation de l'or dans toute la page. */
+.share--open {
+  background: transparent;
+  border: 1px solid var(--accent);
+}
+
+@keyframes share-in {
+  from { opacity: 0; transform: scale(0.4); }
+  to   { opacity: 1; transform: none; }
+}
+
+.shares__legend {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  font-size: var(--step--1);
+  color: #C6D2DE;
+}
+
+.shares__legend span { display: flex; align-items: center; gap: 0.5rem; }
+
+.swatch { width: 0.85rem; height: 0.85rem; flex: none; background: #24486B; }
+.swatch--open { background: transparent; border: 1px solid var(--accent); }
+
+/* ---------- Listes ---------- */
+
+.roles { margin-top: 2.5rem; display: grid; gap: 2.25rem; max-width: 56rem; }
+
+@media (min-width: 46rem) {
+  .roles { grid-template-columns: 1fr 1fr; gap: 2.5rem 3rem; }
+}
+
+.role h3 { font-size: var(--step-1); }
+.role p { margin-top: 0.5rem; color: var(--ink-soft); }
+
+.facts { margin-top: 2.5rem; display: grid; gap: 1.6rem; max-width: 48rem; }
+.fact { display: grid; gap: 0.35rem; }
+.fact dt { font-weight: 700; }
+.fact dd { margin: 0; color: var(--ink-soft); }
+
+.faq { margin-top: 2.5rem; display: grid; gap: 2rem; }
+.faq h3 { font-size: var(--step-1); }
+.faq p { margin-top: 0.5rem; color: var(--ink-soft); }
+
+/* ---------- Bandeau lieu ---------- */
+
+.lieu { position: relative; }
+.lieu img { width: 100%; height: clamp(14rem, 34vh, 26rem); object-fit: cover; }
+
+/* ---------- Pied ---------- */
+
+.foot {
+  border-top: 1px solid var(--line);
+  padding-block: 3rem;
+  font-size: var(--step--1);
+  color: var(--ink-soft);
+}
+
+.foot a {
+  color: var(--ink);
+  display: inline-block;
+  min-height: 44px;
+  line-height: 44px;
+}
+
+/* ---------- Mouvement : niveau 1, une seule révélation ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .share { opacity: 1; animation: none; }
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
