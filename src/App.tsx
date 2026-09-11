@@ -1,5 +1,7 @@
 import { CONTACT, hero, etat, capital, roles, cadre, faq, fin, foot } from './content';
 
+const BASE = import.meta.env.BASE_URL;
+
 /* 40 colonnes x 10 rangées = 400 carrés, 500 actions chacun = 20 000.
    Le fondateur détient 100 % aujourd'hui ; les carrés « ouverts » figurent
    ce qu'une augmentation de capital réservée peut ouvrir. */
@@ -35,8 +37,8 @@ export default function App() {
       <header className="hero wrap">
         <div className="hero__media" aria-hidden="true">
           <picture>
-            <source media="(max-width: 44rem)" srcSet="/images/hero-mobile.webp" />
-            <img src="/images/hero.webp" alt="" width={1600} height={900} fetchPriority="high" />
+            <source media="(max-width: 44rem)" srcSet={`${BASE}images/hero-mobile.webp`} />
+            <img src={`${BASE}images/hero.webp`} alt="" width={1600} height={900} fetchPriority="high" />
           </picture>
         </div>
         <h1 className="hero__title">
@@ -82,7 +84,7 @@ export default function App() {
         </section>
 
         <div className="lieu" aria-hidden="true">
-          <img src="/images/lieu.webp" alt="" width={1400} height={787} loading="lazy" />
+          <img src={`${BASE}images/lieu.webp`} alt="" width={1400} height={787} loading="lazy" />
         </div>
 
         <section className="section wrap">
