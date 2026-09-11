@@ -1,3 +1,23 @@
+import facts from './facts.json';
+import { formatNumber } from './lib/format';
+
+/** Valeur d'un fait ou d'un dérivé du registre. Aucun chiffre n'est écrit à la main. */
+export function fact(id: string): number {
+  const found = facts.facts.find((f) => f.id === id);
+  if (found) return found.value;
+  const derived = facts.derived.find((d) => d.id === id);
+  if (derived) {
+    const cols = facts.facts.find((f) => f.id === 'grid.cols')!.value;
+    const rows = facts.facts.find((f) => f.id === 'grid.rows')!.value;
+    const shares = facts.facts.find((f) => f.id === 'capital.shares')!.value;
+    if (derived.id === 'grid.squares') return cols * rows;
+    if (derived.id === 'grid.unit') return shares / (cols * rows);
+  }
+  throw new Error(`Fait manquant : ${id}`);
+}
+
+const n = (id: string) => formatNumber(fact(id));
+
 /* Textes — Cortex Africa.
    Chaque fait provient de context/entreprise.md. Rien n'est inventé :
    ni produit, ni client, ni chiffre d'affaires, ni effectif, ni partenaire. */
@@ -37,10 +57,10 @@ export const etat = {
 
 export const capital = {
   eyebrow: 'Le capital',
-  title: '20 000 actions de 100 FCFA.',
+  title: `${n('capital.shares')} actions de ${n('capital.nominal')} FCFA.`,
   paragraphs: [
-    "Le capital social est de 2 000 000 FCFA, divisé en 20 000 actions ordinaires " +
-      "de 100 FCFA, intégralement libérées dès la constitution.",
+    `Le capital social est de ${n('capital.total')} FCFA, divisé en ${n('capital.shares')} actions ordinaires ` +
+      `de ${n('capital.nominal')} FCFA, intégralement libérées dès la constitution.`,
     "Cette valeur nominale basse n’est pas un détail comptable : elle a été choisie " +
       "pour permettre une répartition fine entre de futurs associés. Une société qui " +
       "ne compte pas vous accueillir ne se structure pas ainsi.",
@@ -48,8 +68,8 @@ export const capital = {
   legendHeld: 'Détenu aujourd’hui par le fondateur',
   legendOpen: 'Ce que les augmentations de capital à venir peuvent ouvrir',
   note:
-    "Représentation schématique : chaque carré vaut 500 actions. Aucune " +
-    "attribution n’est promise ici — elle se décide au cas par cas.",
+    `Représentation schématique : chaque carré vaut ${n('grid.unit')} actions. Aucune ` +
+    `attribution n’est promise ici — elle se décide au cas par cas.`,
 };
 
 export const roles = {

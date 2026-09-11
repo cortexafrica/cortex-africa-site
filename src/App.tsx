@@ -1,20 +1,33 @@
-import { CONTACT, hero, etat, capital, roles, cadre, faq, fin, foot } from './content';
+import { useEffect, useRef } from 'react';
+import { CONTACT, hero, etat, capital, roles, cadre, faq, fin, foot, fact } from './content';
+import { registerFactCheck } from './lib/fact-checks';
+import { formatNumber } from './lib/format';
 
 const BASE = import.meta.env.BASE_URL;
 
-/* 40 colonnes x 10 rangées = 400 carrés, 500 actions chacun = 20 000.
+/* Toutes ces valeurs viennent de src/facts.json — jamais écrites à la main.
    Le fondateur détient 100 % aujourd'hui ; les carrés « ouverts » figurent
    ce qu'une augmentation de capital réservée peut ouvrir. */
-const COLS = 40;
-const ROWS = 10;
-const TOTAL = COLS * ROWS;
+const COLS = fact('grid.cols');
+const TOTAL = fact('grid.squares');
 const OPEN_FROM = Math.floor(TOTAL * 0.82);
 
 function Shares() {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    registerFactCheck({
+      name: 'grille du capital',
+      fact: 'grid.squares',
+      expected: TOTAL,
+      actual: ref.current?.children.length ?? 0,
+    });
+  });
+
   return (
     <>
-      <div className="shares" role="img"
-           aria-label="Grille figurant 20 000 actions : la part détenue aujourd'hui, et celle que les augmentations de capital à venir peuvent ouvrir.">
+      <div className="shares" ref={ref} style={{ '--cols': COLS } as React.CSSProperties} role="img"
+           aria-label={`Grille figurant ${formatNumber(fact('capital.shares'))} actions : la part détenue aujourd'hui, et celle que les augmentations de capital à venir peuvent ouvrir.`}>
         {Array.from({ length: TOTAL }, (_, i) => (
           <span
             key={i}

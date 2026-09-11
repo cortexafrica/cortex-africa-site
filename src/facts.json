@@ -1,0 +1,53 @@
+{
+  "facts": [
+    {
+      "id": "capital.total",
+      "label": "Capital social",
+      "value": 2000000,
+      "unit": "FCFA",
+      "source": "context/entreprise.md — projet de statuts"
+    },
+    {
+      "id": "capital.shares",
+      "label": "Nombre d'actions",
+      "value": 20000,
+      "unit": "actions",
+      "source": "context/entreprise.md — projet de statuts"
+    },
+    {
+      "id": "capital.nominal",
+      "label": "Valeur nominale",
+      "value": 100,
+      "unit": "FCFA",
+      "source": "context/entreprise.md — projet de statuts"
+    },
+    {
+      "id": "grid.cols",
+      "label": "Colonnes de la grille",
+      "value": 40,
+      "unit": "colonnes",
+      "source": "choix de représentation"
+    },
+    {
+      "id": "grid.rows",
+      "label": "Rangées de la grille",
+      "value": 10,
+      "unit": "rangées",
+      "source": "choix de représentation"
+    }
+  ],
+  "derived": [
+    {
+      "id": "grid.squares",
+      "label": "Carrés affichés",
+      "formula": "grid.cols * grid.rows"
+    },
+    {
+      "id": "grid.unit",
+      "label": "Actions par carré",
+      "formula": "capital.shares / (grid.cols * grid.rows)"
+    }
+  ],
+  "allowed_numbers": [],
+  "ignore_patterns": []
+}
